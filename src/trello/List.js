@@ -1,13 +1,13 @@
 import React from "react";
 import Card from "./Card";
 
-const List = ({ column, board }) => {
+const List = ({ list, board }) => {
   return (
-    <div key={column.id} style={{ marginRight: "20px" }}>
+    <div key={list.id} style={{ marginRight: "20px" }}>
       <div style={{ width: "200px" }}>
-        <h2>{column.name}</h2>
+        <h2>{list.name}</h2>
       </div>
-      {column.cards.map((card) => (
+      {list.cards.map((card) => (
         <div key={card.id}>
           <Card board={board} card={card} />
         </div>

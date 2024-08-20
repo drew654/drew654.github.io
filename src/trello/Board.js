@@ -8,7 +8,7 @@ import List from "./List";
 const Board = () => {
   const { boardId } = useParams();
   const [board, setBoard] = useState(null);
-  const [columns, setColumns] = useState([]);
+  const [lists, setLists] = useState([]);
 
   useEffect(() => {
     fetch(
@@ -25,20 +25,20 @@ const Board = () => {
     )
       .then((response) => response.json())
       .then((data) => {
-        const columnPromises = data.map((column) => {
+        const listPromises = data.map((list) => {
           return fetch(
-            `https://api.trello.com/1/lists/${column.id}/cards?key=${config.TRELLO_API_KEY}&token=${config.TRELLO_API_TOKEN}`
+            `https://api.trello.com/1/lists/${list.id}/cards?key=${config.TRELLO_API_KEY}&token=${config.TRELLO_API_TOKEN}`
           )
             .then((response) => response.json())
             .then((cards) => {
               return {
-                id: column.id,
-                name: column.name,
+                id: list.id,
+                name: list.name,
                 cards: cards,
               };
             });
         });
-        Promise.all(columnPromises).then((columns) => setColumns(columns));
+        Promise.all(listPromises).then((lists) => setLists(lists));
       })
       .catch((error) => console.log(error));
   }, [boardId]);
@@ -68,8 +68,8 @@ const Board = () => {
           margin: "10px",
         }}
       >
-        {columns.map((column) => (
-          <List key={column.id} column={column} board={board} />
+        {lists.map((list) => (
+          <List key={list.id} list={list} board={board} />
         ))}
       </div>
     </div>
